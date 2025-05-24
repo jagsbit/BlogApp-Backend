@@ -1,14 +1,12 @@
-# Use Eclipse Temurin (OpenJDK 21) base image
-FROM eclipse-temurin:21-jdk
-
-# Set working directory
+# Stage 1: Build the Spring Boot app using Maven
+FROM maven:3.9.5-eclipse-temurin-21 AS build
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copy the jar file into the image
-COPY target/blog-app.jar app.jar
-
-# Expose the port your app runs on (default 8080)
+# Stage 2: Run the app using OpenJDK 21
+FROM eclipse-temurin:21-jdk
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Run the jar file
 ENTRYPOINT ["java", "-jar", "app.jar"]
