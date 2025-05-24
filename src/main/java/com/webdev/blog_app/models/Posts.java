@@ -19,8 +19,6 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
-import com.webdev.blog_app.models.Users;
-
 @Entity
 public class Posts {
 
@@ -39,22 +37,16 @@ public class Posts {
     private String postImage;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Categories category;
-    
-    
 
-    public Set<Users> getLikes() {
-		return likes;
-	}
-
-	@ManyToOne
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comments> comments = new ArrayList<>();
 
-    
     @ManyToMany
     @JoinTable(
         name = "post_likes",
@@ -78,35 +70,66 @@ public class Posts {
     }
 
     // Getters and Setters
-    public int getPostId() { return postId; }
-    public void setPostId(int postId) { this.postId = postId; }
+    public int getPostId() {
+        return postId;
+    }
+    public void setPostId(int postId) {
+        this.postId = postId;
+    }
 
-    public String getPostTitle() { return postTitle; }
-    public void setPostTitle(String postTitle) { this.postTitle = postTitle; }
+    public String getPostTitle() {
+        return postTitle;
+    }
+    public void setPostTitle(String postTitle) {
+        this.postTitle = postTitle;
+    }
 
-    public String getPostContent() { return postContent; }
-    public void setPostContent(String postContent) { this.postContent = postContent; }
+    public String getPostContent() {
+        return postContent;
+    }
+    public void setPostContent(String postContent) {
+        this.postContent = postContent;
+    }
 
-    public OffsetDateTime getPostDate() { return postDate; }
-    public void setPostDate(OffsetDateTime postDate) { this.postDate = postDate; }
+    public OffsetDateTime getPostDate() {
+        return postDate;
+    }
+    public void setPostDate(OffsetDateTime postDate) {
+        this.postDate = postDate;
+    }
 
-    public String getPostImage() { return postImage; }
-    public void setPostImage(String postImage) { this.postImage = postImage; }
+    public String getPostImage() {
+        return postImage;
+    }
+    public void setPostImage(String postImage) {
+        this.postImage = postImage;
+    }
 
-    public Categories getCategory() { return category; }
-    public void setCategory(Categories category) { this.category = category; }
+    public Categories getCategory() {
+        return category;
+    }
+    public void setCategory(Categories category) {
+        this.category = category;
+    }
 
-    public Users getUser() { return user; }
-    public void setUser(Users user) { this.user = user; }
+    public Users getUser() {
+        return user;
+    }
+    public void setUser(Users user) {
+        this.user = user;
+    }
 
-    public List<Comments> getComments() { return comments; }
-    public void setComments(List<Comments> comments) { this.comments = comments; }
+    public List<Comments> getComments() {
+        return comments;
+    }
+    public void setComments(List<Comments> comments) {
+        this.comments = comments;
+    }
 
-        public void setLikes(Set<Users> likes) {
-            this.likes = likes;
-        }
-
-    
+    public Set<Users> getLikes() {
+        return likes;
+    }
+    public void setLikes(Set<Users> likes) {
+        this.likes = likes;
+    }
 }
-    
-
