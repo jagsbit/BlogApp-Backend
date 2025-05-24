@@ -1,64 +1,80 @@
 package com.webdev.blog_app.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
-@Entity 
+@Entity
+@Table(name = "comments")
 public class Comments {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	private String content;
-	@ManyToOne
-	private Posts post;
-	@ManyToOne
-	private Users user;
 
-	public int getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String content;
 
-	public String getContent() {
-		return content;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", nullable = false)
+    private Posts post;
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private Users user;
 
-	public Posts getPost() {
-		return post;
-	}
+    // Constructors
+    public Comments() {}
 
-	public void setPost(Posts post) {
-		this.post = post;
-	}
+    public Comments(int id, String content, Posts post, Users user) {
+        this.id = id;
+        this.content = content;
+        this.post = post;
+        this.user = user;
+    }
 
-	public Users getUser() {
-		return user;
-	}
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
 
-	public void setUser(Users user) {
-		this.user = user;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public Comments(int id, String content, Posts post, Users user) {
-		super();
-		this.id = id;
-		this.content = content;
-		this.post = post;
-		this.user = user;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public Comments() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Posts getPost() {
+        return post;
+    }
+
+    public void setPost(Posts post) {
+        this.post = post;
+    }
+
+    public Users getUser() {
+        return user;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
+
+    // equals and hashCode based on `id`
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Comments)) return false;
+        Comments comment = (Comments) o;
+        return id == comment.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
 }
