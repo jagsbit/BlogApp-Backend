@@ -2,15 +2,16 @@ package com.webdev.blog_app.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "categories") // Explicitly define table name
+@Table(name = "categories")
 public class Categories {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int catId;
 
     @Column(nullable = false)
@@ -19,14 +20,13 @@ public class Categories {
     @Column(length = 1000)
     private String catDescription;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Posts> posts = new ArrayList<>();
 
     // Constructors
     public Categories() {}
 
-    public Categories(int catId, String catName, String catDescription) {
-        this.catId = catId;
+    public Categories(String catName, String catDescription) {
         this.catName = catName;
         this.catDescription = catDescription;
     }
@@ -64,17 +64,16 @@ public class Categories {
         this.posts = posts;
     }
 
-    // equals and hashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Categories)) return false;
-        Categories category = (Categories) o;
-        return catId == category.catId;
+        Categories that = (Categories) o;
+        return catId == that.catId;
     }
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(catId);
+        return Objects.hash(catId);
     }
 }

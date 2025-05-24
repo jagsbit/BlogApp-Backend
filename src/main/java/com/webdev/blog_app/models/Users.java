@@ -2,15 +2,16 @@ package com.webdev.blog_app.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users") // Explicitly set the table name to avoid PostgreSQL case sensitivity issues
+@Table(name = "users")
 public class Users {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(nullable = false)
@@ -24,19 +25,16 @@ public class Users {
 
     private String about;
 
-    // One user can have many posts
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Posts> posts = new ArrayList<>();
 
-    // One user can have many comments
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comments> comments = new ArrayList<>();
 
     // Constructors
     public Users() {}
 
-    public Users(int id, String name, String email, String password, String about) {
-        this.id = id;
+    public Users(String name, String email, String password, String about) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -100,17 +98,16 @@ public class Users {
         this.comments = comments;
     }
 
-    // equals and hashCode
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Users)) return false;
-        Users user = (Users) o;
-        return id == user.id;
+        Users users = (Users) o;
+        return id == users.id;
     }
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(id);
+        return Objects.hash(id);
     }
 }

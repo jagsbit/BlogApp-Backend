@@ -6,24 +6,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "posts")
 public class Posts {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int postId;
 
     private String postTitle;
@@ -36,15 +26,15 @@ public class Posts {
 
     private String postImage;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Categories category;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comments> comments = new ArrayList<>();
 
     @ManyToMany
@@ -58,9 +48,7 @@ public class Posts {
     // Constructors
     public Posts() {}
 
-    public Posts(int postId, String postTitle, String postContent, OffsetDateTime postDate, String postImage,
-                 Categories category, Users user) {
-        this.postId = postId;
+    public Posts(String postTitle, String postContent, OffsetDateTime postDate, String postImage, Categories category, Users user) {
         this.postTitle = postTitle;
         this.postContent = postContent;
         this.postDate = postDate;
@@ -73,6 +61,7 @@ public class Posts {
     public int getPostId() {
         return postId;
     }
+
     public void setPostId(int postId) {
         this.postId = postId;
     }
@@ -80,6 +69,7 @@ public class Posts {
     public String getPostTitle() {
         return postTitle;
     }
+
     public void setPostTitle(String postTitle) {
         this.postTitle = postTitle;
     }
@@ -87,6 +77,7 @@ public class Posts {
     public String getPostContent() {
         return postContent;
     }
+
     public void setPostContent(String postContent) {
         this.postContent = postContent;
     }
@@ -94,6 +85,7 @@ public class Posts {
     public OffsetDateTime getPostDate() {
         return postDate;
     }
+
     public void setPostDate(OffsetDateTime postDate) {
         this.postDate = postDate;
     }
@@ -101,6 +93,7 @@ public class Posts {
     public String getPostImage() {
         return postImage;
     }
+
     public void setPostImage(String postImage) {
         this.postImage = postImage;
     }
@@ -108,6 +101,7 @@ public class Posts {
     public Categories getCategory() {
         return category;
     }
+
     public void setCategory(Categories category) {
         this.category = category;
     }
@@ -115,6 +109,7 @@ public class Posts {
     public Users getUser() {
         return user;
     }
+
     public void setUser(Users user) {
         this.user = user;
     }
@@ -122,6 +117,7 @@ public class Posts {
     public List<Comments> getComments() {
         return comments;
     }
+
     public void setComments(List<Comments> comments) {
         this.comments = comments;
     }
@@ -129,6 +125,7 @@ public class Posts {
     public Set<Users> getLikes() {
         return likes;
     }
+
     public void setLikes(Set<Users> likes) {
         this.likes = likes;
     }
