@@ -25,13 +25,13 @@ import com.webdev.blog_app.models.Users;
 public class Posts {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
     private int postId;
 
     private String postTitle;
 
     @Lob
-    @Column(columnDefinition = "LONGTEXT")
+    @Column(columnDefinition = "TEXT")
     private String postContent;
 
     private OffsetDateTime postDate;
